@@ -4,28 +4,33 @@ const db=require('../config/database')
 
 
 pokemon.post("/", (req, res, next)=>{
-    return res.status(200).send(req.body)
+    return res.status(200).json(req.body)
 });
 
 pokemon.get('/',async (req, res, next)=>{
   
 
     const pkmn =await db.query("SELECT * FROM pokemon");
-    res.status(200).json(pkmn);
+    res.status(200).json({code:1, message:pkmn});
 });
 pokemon.get('/:id([0-9]{1,3})',async(req, res, next)=>{
 
     const id = req.params.id;
 
-    const pkmns =await  db.query("select * from pokemon where pok_id='"+id+"'");
-    res.status(200).json(pkmns);
-    
+    if (id>=1 && id<=722) {
+        const pkmn =await  db.query("select * from pokemon where pok_id='"+id+"'");
+        res.status(200).json({code:1, message:pkmn});
+    }
+    return res.status(404).send({code:404, message:"Pokemon no encontrado"});  
 });
 pokemon.get('/:name([A-Za-z]+)', async(req, res, next)=>
 {
     const name= req.params.name;
-    const pkmname =await  db.query("select * from pokemon where pok_name='"+name+"'");
-    res.status(200).json(pkmname);
+    const pkmn=await  db.query("select * from pokemon where pok_name='"+name+"'");
+    if (pkmn.length>0) {
+        res.status(200).json({code:1, message:pkmn});
+    }
+    return res.status(404).send({code:404, message:"Pokemon no encontrado"});  
 });
 
 module.exports=pokemon;
