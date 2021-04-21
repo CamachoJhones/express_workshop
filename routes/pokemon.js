@@ -82,4 +82,6 @@ pokemon.get('/:name([A-Za-z]+)', async(req, res, next)=>
     }
     return res.status(404).send({code:404, message:"Pokemon no encontrado"});  
 });
+
+
 module.exports=pokemon;
