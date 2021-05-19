@@ -25,9 +25,7 @@ app.use(express.urlencoded({extended:true}));
     PUT Reemplazar todas las representaciones actuales de un recurso con la carga de la peticion
     DELETE borra un recurso especifico.
 */
-app.get("/", (req, res, next)=>{
-    res.status(200).send("Hola");
-});
+app.get("/", index);
 
 app.use("/user", user);
 
